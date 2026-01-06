@@ -116,8 +116,8 @@ const App = () => {
             </div>
             <div className="flex flex-col items-center text-center gap-4">
               <Activity className="text-zinc-300" size={32} />
-              <div className="text-4xl md:text-5xl font-black italic tracking-tighter">98%</div>
-              <div className="text-[10px] font-black tracking-widest text-zinc-400 uppercase">Uptime / 稼働率</div>
+              <div className="text-4xl md:text-5xl font-black italic tracking-tighter">1/3</div>
+              <div className="text-[10px] font-black tracking-widest text-zinc-400 uppercase">Uptime / 平均オンライン率</div>
             </div>
           </div>
         </div>
