@@ -5,7 +5,7 @@ import { Shield, Flame, ChevronRight, Menu, X, ExternalLink, Hammer, ArrowLeft, 
  * Gemini API 設定
  * 本来はここにAPIキーが入りますが、現在は空の状態です。
  */
-const apiKey = "AIzaSyA5ksJw1Y6zwaGWR0XFDGErVx61gvRzy0s"; 
+const apiKey = ""; 
 
 const RevealSection = ({ children, className = "" }) => {
   const [isVisible, setIsVisible] = useState(false);
