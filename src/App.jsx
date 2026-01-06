@@ -52,19 +52,18 @@ const App = () => {
   
   const [newsData] = useState([
     { id: 1, date: '2026.01.06', category: '重要', title: '公式サイトをリニューアルしました。', content: '桜川県公式サイトが新しくなりました。リキッドグラス・デザインを採用し、より直感的な操作が可能になりました。' },
-    { id: 2, date: '2026.01.05', category: '公報', title: '次世代ロールプレイ体験の提供開始', content: '新しい市民生活シミュレーションシステムの導入により、さらにリアルな社会体験が可能になります。' },
   ]);
 
   const [businessData] = useState([
-    { name: "桜川水道センター", owner: "代表: @1234072414091083856", icon: <Droplets size={24} />, content: "水漏れやつまりの対応、水質検査を実施。給水車の配備や社会科見学イベントも開催。", tag: "インフラ" },
-    { name: "北京電力", owner: "代表: ほくと", icon: <Zap size={24} />, content: "火災や災害案件での電力遮断・復旧。重要施設への安定した電力供給を維持します。", tag: "エネルギー" },
-    { name: "桜川広域産業総合倉庫", owner: "代表: @842752624486907904", icon: <Box size={24} />, content: "食品、物品、燃料等の保管・貯蔵および運搬。物流ネットワークの根幹を支えます。", tag: "物流・倉庫" },
-    { name: "桜川クリーンセンター", owner: "代表: @1401146173120843869", icon: <Trash2 size={24} />, content: "廃棄物処理施設。安全で清潔なまちづくりを目的として、資源リサイクルを推進します。", tag: "環境整備" },
+    { name: "桜川県民営広域上下水道局", owner: "代表: tamagoumai_", icon: <Droplets size={24} />, content: "水漏れやつまりの対応、水質検査を実施.給水車の配備や社会科見学イベントも開催。", tag: "インフラ" },
+    { name: "北京電力", owner: "代表: hokuto1324_54827", icon: <Zap size={24} />, content: "火災や災害案件での電力遮断・復旧。重要施設への安定した電力供給を維持します。", tag: "エネルギー" },
+    { name: "桜川広域産業総合倉庫", owner: "代表: brassmasuta", icon: <Box size={24} />, content: "食品、物品、燃料等の保管・貯蔵および運搬。物流ネットワークの根幹を支えます。", tag: "物流・倉庫" },
+    { name: "桜川クリーンセンター", owner: "代表: yatugi23553", icon: <Trash2 size={24} />, content: "廃棄物処理施設。安全で清潔なまちづくりを目的として、資源リサイクルを推進します。", tag: "環境整備" },
     { name: "岩魂", owner: "代表: Kyu Tetu", icon: <Utensils size={24} />, content: "ラーメンを主軸とした飲食店業務。地域に愛されるこだわりの味を提供します。", tag: "飲食" },
-    { name: "Caturra coffee", owner: "代表: @1254764167747993633", icon: <Coffee size={24} />, content: "落ち着いた空間とこだわりの一杯を提供し、市民の交流の場を創出します。", tag: "飲食" },
+    { name: "Caturra coffee", owner: "代表: aoido2", icon: <Coffee size={24} />, content: "落ち着いた空間とこだわりの一杯を提供し、市民の交流の場を創出します。", tag: "飲食" },
     { name: "Light's Pizza", owner: "代表: shiryu20090328", icon: <Pizza size={24} />, content: "迅速なデリバリーと高品質なピザで、桜川の食卓に彩りを届けます。", tag: "飲食" },
-    { name: "桜川県立大学 / 永理学園", owner: "代表: new_hazryon", icon: <GraduationCap size={24} />, content: "教育・学習支援。基礎知識から応用技能まで、幅広い学びの場を提供します。", tag: "教育" },
-    { name: "桜川県警備保障株式会社", owner: "代表: @1266690884494164058", icon: <Shield size={24} />, content: "施設警備や町の巡回。プロの技術で桜川県の安全と資産を守り抜きます。", tag: "警備" }
+    { name: "学校法人 永環学園 桜川情報技術専門学校", owner: "代表: new_hazryon", icon: <GraduationCap size={24} />, content: "教育・学習支援。基礎知識から応用技能まで、幅広い学びの場を提供します。", tag: "教育" },
+    { name: "桜川県警備保障株式会社", owner: "代表: oshun1019", icon: <Shield size={24} />, content: "施設警備や町の巡回。プロの技術で桜川県の安全と資産を守り抜きます。", tag: "警備" }
   ]);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -91,16 +90,41 @@ const App = () => {
     setChatMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsTyping(true);
 
-    // AI機能の核となるプロンプト
-    const systemPrompt = "あなたは『桜川県』のAIコンシェルジュです。桜川県はRobloxの日本を舞台にした本格ロールプレイサーバーです。丁寧かつ親しみやすい日本語で、市民の質問に答えてください。";
+    // 強化されたシステムプロンプト
+    const systemPrompt = `あなたは『桜川県』のAIコンシェルジュです。桜川県はRoblox上の本格ロールプレイサーバーです。以下の知識を遵守し、丁寧かつ親しみやすい「県職員」として回答してください。
 
-    // APIリトライロジック
+【重要なルール】
+1. あなたが知らない情報、最新の事件、個別のプレイヤーの動向については「申し訳ございませんが、その件については私では把握しておりません」とはっきり伝え、必ず「公式Discordサーバー（https://discord.gg/zXfJSnQGSB）の該当チャンネルをご確認いただくか、運営スタッフにお問い合わせください」と案内してください。
+2. 憶測で回答せず、常に公式設定に基づいた回答を行ってください。
+
+【桜川県の詳細知識】
+■ 県直轄事業
+- 桜川県警察: 治安維持、交通捜査、事件対応を担当。
+- 凪浦広域連合消防局: 消火、救急、救助活動を担当。
+- 桜川県交通: 鉄道やバス等の交通インフラの整備・運営。
+- 桜川県立総合病院: 高度医療の提供、市民の健康管理。
+
+■ 認可済み民間事業
+- 桜川水道センター: 水漏れ対応、水質検査、給水。
+- 北京電力: 電力インフラの保守、災害時の電力遮断・復旧。
+- 桜川広域産業総合倉庫: 物資・燃料の貯蔵、運搬。
+- 桜川クリーンセンター: 廃棄物処理、資源リサイクル。
+- 岩魂: こだわりのラーメンを提供する飲食店。
+- Caturra coffee: 市民の交流の場となるカフェ。
+- Light's Pizza: ピザの製造・迅速なデリバリー。
+- 永理学園技術専門学校: 地域の教育・学習支援。
+- 桜川県警備保障(株): 施設警備、地域巡回。
+ほかにも、プレイヤー自身で事業を設立することができます。
+
+■ 統計・現状
+- 県民数: 約320名以上が公式コミュニティに参加。
+- 組織数: 14以上の行政・民間組織が活動中。
+
+■ 手続きについて
+- 採用（警察・消防・病院など）や、新規事業所の設立申請は、すべて公式Discordサーバー内で行われます。ウェブサイト上で直接の応募はできません。`;
+
     const fetchWithRetry = async (retries = 5, delay = 1000) => {
-      // APIキーがない場合の早期リターン（エラー防止）
-      if (!apiKey) {
-        throw new Error('MISSING_API_KEY');
-      }
-
+      if (!apiKey) throw new Error('MISSING_API_KEY');
       try {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -110,10 +134,9 @@ const App = () => {
             systemInstruction: { parts: [{ text: systemPrompt }] }
           })
         });
-        
         if (!response.ok) throw new Error('API_ERROR');
         const data = await response.json();
-        return data.candidates?.[0]?.content?.parts?.[0]?.text || "申し訳ございません。現在応答を生成できませんでした。";
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "応答を生成できませんでした。Discordを確認してください。";
       } catch (error) {
         if (error.message !== 'MISSING_API_KEY' && retries > 0) {
           await new Promise(res => setTimeout(res, delay));
@@ -127,9 +150,9 @@ const App = () => {
       const aiResponse = await fetchWithRetry();
       setChatMessages(prev => [...prev, { role: 'ai', text: aiResponse }]);
     } catch (error) {
-      let errorMsg = "申し訳ございません。システムが一時的にオフラインです。";
+      let errorMsg = "システムが一時的にオフラインです。公式Discordでお問い合わせください。";
       if (error.message === 'MISSING_API_KEY') {
-        errorMsg = "現在、AIコンシェルジュはメンテナンス中です（API設定待ち）。しばらくしてから再度お試しください。";
+        errorMsg = "AIコンシェルジュは現在メンテナンス中です。詳細な情報はDiscordサーバーをご確認ください。";
       }
       setChatMessages(prev => [...prev, { role: 'ai', text: errorMsg, isError: true }]);
     } finally {
@@ -151,16 +174,15 @@ const App = () => {
 
   const Home = () => (
     <div className="relative">
-      {/* ヒーローセクション */}
       <section className="relative h-screen flex items-center justify-center px-6 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[url('https://cdn.discordapp.com/attachments/1420627208384544805/1457981527555313746/8439333602_87905417474793_1767424421452.png?ex=695dfa9c&is=695ca91c&hm=b6f1029d269ad5d08a0473b00d6a877231139fb422e4ff642d9b9c1bda90d63d&')] bg-cover bg-center opacity-40 grayscale contrast-125 scale-105 animate-slow-zoom"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-[#0a0a0c]/80"></div>
         </div>
         <div className="relative text-center z-10 w-full flex flex-col items-center">
-          <span className="text-[11px] font-black tracking-[0.5em] text-amber-500 mb-6 uppercase animate-fade-in">至高のロールプレイ体験を、ここで。</span>
+          <span className="text-[11px] font-black tracking-[0.5em] text-amber-500 mb-6 uppercase animate-fade-in">至高のロールプレイ体験を、Robloxで。</span>
           <h1 className="font-black tracking-tighter animate-slide-up leading-[0.8] text-white drop-shadow-[0_0_50px_rgba(255,255,255,0.1)] text-center mb-4" style={{ fontSize: 'clamp(3.5rem, 14vw, 16rem)' }}>SAKURAGAWA</h1>
-          <p className="mt-4 text-[14px] font-black tracking-[1.2em] text-white/80 uppercase pl-[1.2em]">桜川県 公式ポータルサイト</p>
+          <p className="mt-4 text-[14px] font-black tracking-[1.2em] text-white/80 uppercase pl-[1.2em]">桜川県</p>
           <div className="mt-16 flex flex-col md:flex-row gap-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
              <a href="https://discord.gg/zXfJSnQGSB" target="_blank" rel="noopener noreferrer" className="px-12 py-5 bg-white text-black text-[11px] font-black uppercase tracking-widest hover:bg-amber-500 transition-all rounded-full shadow-[0_0_30px_rgba(255,255,255,0.2)] inline-flex items-center gap-2">Discordに参加する <ExternalLink size={14} /></a>
              <button onClick={() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-12 py-5 bg-white/5 border border-white/10 text-white text-[11px] font-black uppercase tracking-widest hover:bg-white/10 transition-all rounded-full backdrop-blur-xl">詳しく知る</button>
@@ -168,7 +190,6 @@ const App = () => {
         </div>
       </section>
 
-      {/* アバウトセクション */}
       <section id="about-section" className="py-40 relative z-10">
         <RevealSection className="container mx-auto px-6 max-w-5xl">
           <div className="p-12 md:p-24 bg-white/5 border border-white/10 rounded-[3.5rem] backdrop-blur-[40px] shadow-2xl relative overflow-hidden group">
@@ -176,7 +197,7 @@ const App = () => {
             <div className="relative flex flex-col items-center text-center">
               <div className="w-20 h-1 bg-amber-500 mb-12 rounded-full"></div>
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-10 text-white leading-tight">
-                次世代のロールプレイが、<br/><span className="text-amber-500">日常</span>を塗り替える。
+                ハードロールプレイが、<br/><span className="text-amber-500">RPの常識</span>を塗り替える。
               </h2>
               <p className="text-zinc-400 text-sm md:text-lg leading-loose font-medium max-w-2xl text-justify md:text-center">
                 桜川県は、Robloxで展開される国内有数の本格派ロールプレイサーバーです。
@@ -189,45 +210,13 @@ const App = () => {
         </RevealSection>
       </section>
 
-      {/* 動画セクション */}
-      <section id="trailer-section" className="py-24 relative z-10">
-        <RevealSection className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8 text-white">
-              <div className="text-center md:text-left">
-                <span className="text-[11px] font-black tracking-[0.4em] text-amber-500 uppercase mb-4 block">公式プロモーションビデオ</span>
-                <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase leading-none">Trailer.</h2>
-              </div>
-              <p className="text-zinc-400 text-xs font-bold max-w-xs text-center md:text-right tracking-widest leading-relaxed">
-                桜川県の世界観を凝縮した最新の映像をご覧ください。
-              </p>
-            </div>
-            
-            <div className="relative group mx-auto max-w-5xl">
-              <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/20 to-purple-500/20 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative w-full aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-black/40 backdrop-blur-sm">
-                <iframe 
-                  className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/9TywKfddUZQ?si=d73yz7UmBgGKvZFZ&rel=0" 
-                  title="桜川県 公式トレーラー" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
-          </div>
-        </RevealSection>
-      </section>
-
-      {/* 統計セクション */}
       <section className="py-32 relative z-10">
         <RevealSection className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { label: "県民数", value: "320", unit: "名", desc: "公式Discord 参加者数" },
-              { label: "稼働組織数", value: "14", unit: "団体", desc: "行政機関および民間事業所" },
-              { label: "満足度", value: "100", unit: "%", desc: "徹底したロールプレイ品質" }
+              { label: "県民数", value: "320", unit: "＋", desc: "公式Discord 参加者数" },
+              { label: "組織数", value: "14", unit: "＋", desc: "県直轄・民間事業" },
+              { label: "イベント時満足度", value: "100", unit: "%", desc: "徹底したロールプレイ品質" }
             ].map((stat, i) => (
               <div key={i} className="p-10 bg-white/5 border border-white/10 rounded-[2.5rem] backdrop-blur-xl hover:bg-white/10 transition-all duration-500 group">
                 <div className="text-[11px] font-black tracking-widest text-amber-500 uppercase mb-6">{stat.label}</div>
@@ -248,13 +237,11 @@ const App = () => {
     <div className="min-h-screen bg-[#0a0a0c] font-sans text-white overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-200">
       <LiquidBackground />
 
-      {/* 開発状況バナー */}
       <div className="fixed top-0 w-full bg-amber-500/10 backdrop-blur-md text-amber-500 py-2.5 px-4 flex items-center justify-center gap-4 z-[120] border-b border-white/5">
         <Hammer size={12} className="animate-pulse" />
-        <span className="text-[10px] font-black tracking-[0.5em] uppercase italic">公式開発ビルド v1.2 公開中</span>
+        <span className="text-[10px] font-black tracking-[0.5em] uppercase italic">開発中・未公開</span>
       </div>
 
-      {/* ナビゲーション */}
       <nav className="fixed w-full z-[100] transition-all duration-500 top-12 flex justify-center px-4">
         <div className={`px-8 py-4 rounded-full transition-all duration-700 flex items-center justify-center border border-white/10 shadow-2xl ${isScrolled ? 'bg-black/60 backdrop-blur-2xl py-3 scale-95' : 'bg-white/5 backdrop-blur-xl'}`}>
           <NavContent />
@@ -292,7 +279,7 @@ const App = () => {
               <section className="mb-32">
                 <div className="flex items-center gap-4 border-b border-white/5 pb-6 mb-10"><Shield size={20} className="text-amber-500" /><h3 className="text-xl font-black tracking-widest uppercase">行政・公共サービス</h3></div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[{ name: "桜川県警察", desc: "治安維持・交通捜査", icon: <Shield size={24}/> },{ name: "凪浦消防局", desc: "消火・救急・救助", icon: <Flame size={24}/> },{ name: "桜川県交通", desc: "交通インフラ整備", icon: <Activity size={24}/> },{ name: "県立病院", desc: "高度医療・地域診療", icon: <Stethoscope size={24}/> }].map(org => (
+                  {[{ name: "桜川県警察", desc: "治安維持・交通捜査", icon: <Shield size={24}/> },{ name: "凪浦広域連合消防局", desc: "消火・救急・救助", icon: <Flame size={24}/> },{ name: "桜川県交通", desc: "交通インフラ整備", icon: <Activity size={24}/> },{ name: "桜川県立総合病院", desc: "高度医療・地域診療", icon: <Stethoscope size={24}/> }].map(org => (
                     <div key={org.name} className="p-8 bg-white/5 border border-white/10 rounded-[2rem] backdrop-blur-xl hover:bg-white hover:text-black transition-all duration-500 group">
                       <div className="text-amber-500 group-hover:text-amber-600 mb-6">{org.icon}</div>
                       <div className="font-black text-xl mb-2 tracking-tighter">{org.name}</div>
@@ -343,7 +330,7 @@ const App = () => {
                       {[
                         { step: "01", title: "公式Discordへの参加", desc: "すべての申請・連絡・広報はDiscordサーバー内で行われます。" },
                         { step: "02", title: "募集要項の確認", desc: "該当チャンネルにて、最新の採用条件や設立ルールを確認してください。" },
-                        { step: "03", title: "書類審査・面接テスト", desc: "本格的なロールプレイテストを経て、正式に配属または事業認可が行われます。" }
+                        { step: "03", title: "書類審査", desc: "試験・審査を経て、正式に配属または事業認可が行われます。" }
                       ].map(item => (
                         <div key={item.step} className="flex gap-10 items-start border-l border-white/10 pl-10 relative">
                           <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>
@@ -421,7 +408,6 @@ const App = () => {
         </div>
       )}
 
-      {/* フッター */}
       <footer className="relative bg-black/50 backdrop-blur-md pt-32 pb-16 text-center border-t border-white/5 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-amber-500/10"></div>
         <div className="text-5xl md:text-7xl font-black italic tracking-tighter mb-8">SAKURAGAWA</div>
@@ -432,7 +418,7 @@ const App = () => {
             <a href="#" className="hover:text-white transition-colors">利用規約</a>
             <a href="#" className="hover:text-white transition-colors">お問い合わせ</a>
           </div>
-          <div>© 2026 SAKURAGAWA PREFECTURE. ALL RIGHTS RESERVED.</div>
+          <div>© 2026 桜川県制作委員会(同).</div>
         </div>
       </footer>
 
