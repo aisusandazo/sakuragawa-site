@@ -3,9 +3,10 @@ import { Shield, Flame, ChevronRight, Menu, X, ExternalLink, Hammer, ArrowLeft, 
 
 /**
  * 【カスタマイズガイド】
- * * 1. テキストの変更: Ctrl+F で表示されている日本語を検索して書き換え
- * * 2. 画像の変更: url('...') や src="..." のURLを差し替え
- * * 3. リンクの変更: href="https://..." のリンク先をDiscord等の招待URLに書き換え
+ * 1. テキストの変更: Ctrl+F で表示されている日本語を検索して書き換え
+ * 2. 画像の変更: 46行目の url('...') のURLを差し替え
+ * 3. リンクの変更: href="https://..." のリンク先を招待URLに書き換え
+ * このサイトはaiisusan_jpnが作成したよ。ちなみにアイスクリームは苦手だよ。
  */
 
 const App = () => {
@@ -39,7 +40,8 @@ const App = () => {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center px-4 overflow-hidden">
         <div className="absolute inset-0 bg-black">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40 grayscale"></div>
+          {/* 背景画像：ここに自分の画像URL（https://...）を貼り付けてください */}
+          <div className="absolute inset-0 bg-[url('https://cdn.discordapp.com/attachments/1420627208384544805/1457981527555313746/8439333602_87905417474793_1767424421452.png?ex=695dfa9c&is=695ca91c&hm=b6f1029d269ad5d08a0473b00d6a877231139fb422e4ff642d9b9c1bda90d63d&')] bg-cover bg-center opacity-40 grayscale"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-white"></div>
         </div>
         
@@ -55,7 +57,7 @@ const App = () => {
           
           <div className="flex flex-col items-center gap-6 mt-12 animate-fade-in delay-500">
              <p className="text-[min(3vw,1.25rem)] font-black tracking-[1em] text-white uppercase opacity-80 pl-[1em]">
-                桜川県
+               桜川県
              </p>
              <div className="h-[1px] w-12 bg-white/20"></div>
           </div>
@@ -181,7 +183,7 @@ const App = () => {
               <div className="p-10 md:p-12 bg-white space-y-6">
                 <h4 className="text-2xl md:text-3xl font-black italic">桜川県警察</h4>
                 <p className="text-zinc-500 leading-relaxed text-sm">
-                  治安維持、交通規制、犯罪捜査。Roblox県内最大の自治権を持ち、秩序の要となります。
+                  治安維持、交通規制、犯罪捜査。犯罪RPの要となります。
                 </p>
               </div>
               <div className="p-10 md:p-12 bg-white space-y-6">
@@ -198,11 +200,11 @@ const App = () => {
               <h3 className="text-xl md:text-2xl font-black italic tracking-tight uppercase">02 / 民間公認事業</h3>
             </div>
             <div className="p-10 md:p-16 bg-zinc-50 space-y-8 rounded-sm">
-                 <h4 className="text-3xl md:text-4xl font-black italic">公認ライセンス事業</h4>
-                 <p className="text-zinc-500 text-sm md:text-lg leading-relaxed max-w-2xl">
-                   審査を通過した組織には、県からの公認ライセンスが付与されます。
-                   Robloxでの運送、警備、報道など、自由な発想で「事業」を展開することが可能です。
-                 </p>
+                  <h4 className="text-3xl md:text-4xl font-black italic">公認ライセンス事業</h4>
+                  <p className="text-zinc-500 text-sm md:text-lg leading-relaxed max-w-2xl">
+                    審査を通過した組織には、県からの公認ライセンスが付与されます。
+                    Robloxでの運送、警備、報道など、自由な発想で「事業」を展開することが可能です。
+                  </p>
             </div>
           </section>
         </div>
@@ -229,7 +231,7 @@ const App = () => {
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="p-6 md:p-8 border border-white/10 hover:border-white/40 transition-colors">
-                <div className="font-black text-xl italic mb-2">県職員採用</div>
+                <div className="font-black text-xl italic mb-2">県直轄組織職員採用</div>
                 <p className="text-[10px] text-zinc-500 leading-relaxed uppercase tracking-widest font-black">選考実施中</p>
               </div>
               <div className="p-6 md:p-8 border border-white/10 hover:border-white/40 transition-colors">
@@ -253,7 +255,7 @@ const App = () => {
       {/* 開発状況バー */}
       <div className="fixed top-0 w-full bg-black text-white py-2 px-4 flex items-center justify-center gap-4 z-[120]">
         <Hammer size={12} className="animate-pulse" />
-        <span className="text-[9px] font-black tracking-[0.5em] uppercase">Status: Under Development / 開発進行中</span>
+        <span className="text-[9px] font-black tracking-[0.5em] uppercase">Status: Under Development / 未公開・開発進行中</span>
       </div>
 
       {/* ナビゲーション */}
