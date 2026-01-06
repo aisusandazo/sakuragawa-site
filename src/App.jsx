@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Shield, Flame, ChevronRight, Menu, X, ExternalLink, Hammer, ArrowLeft, Users, Activity, MessageSquare, Send, Sparkles, Loader2, Landmark, Building2, Stethoscope, Briefcase, Star, FileText, Bell, Clock, Info, Droplets, Zap, Box, Trash2, HardHat, AlertTriangle, FileCheck, Utensils, Coffee, Pizza, GraduationCap, Play } from 'lucide-react';
+import { Shield, Flame, ChevronRight, Menu, X, ExternalLink, Hammer, ArrowLeft, Users, Activity, MessageSquare, Send, Sparkles, Loader2, Landmark, Building2, Stethoscope, Briefcase, Star, FileText, Bell, Clock, Info, Droplets, Zap, Box, Trash2, HardHat, AlertTriangle, FileCheck, Utensils, Coffee, Pizza, GraduationCap, Play, RefreshCw } from 'lucide-react';
 
 /**
- * Gemini API Integration Setup
+ * Gemini API 設定
+ * 本来はここにAPIキーが入りますが、現在は空の状態です。
  */
-const apiKey = ""; 
+const apiKey = "AIzaSyA5ksJw1Y6zwaGWR0XFDGErVx61gvRzy0s"; 
 
 const RevealSection = ({ children, className = "" }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,10 +37,10 @@ const RevealSection = ({ children, className = "" }) => {
   );
 };
 
-// リキッドグラス用の背景コンポーネント（流動的な背景）
+// リキッドグラス用の背景（流動的なアニメーション）
 const LiquidBackground = () => (
   <div className="fixed inset-0 -z-10 overflow-hidden bg-[#0a0a0c]">
-    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-600/20 blur-[120px] animate-pulse rounded-full"></div>
+    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-600/15 blur-[120px] animate-pulse rounded-full"></div>
     <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-amber-600/10 blur-[150px] animate-pulse rounded-full" style={{ animationDelay: '2s' }}></div>
     <div className="absolute top-[30%] left-[20%] w-[30%] h-[30%] bg-blue-600/10 blur-[100px] animate-pulse rounded-full" style={{ animationDelay: '4s' }}></div>
   </div>
@@ -51,7 +52,7 @@ const App = () => {
   
   const [newsData] = useState([
     { id: 1, date: '2026.01.06', category: '重要', title: '公式サイトをリニューアルしました。', content: '桜川県公式サイトが新しくなりました。リキッドグラス・デザインを採用し、より直感的な操作が可能になりました。' },
-    { id: 2, date: '2026.01.01', category: 'イベント', title: '年越しイベント', content: '初めてのサーバー公開イベントを開催しました。ご参加いただきありがとうございました。' },
+    { id: 2, date: '2026.01.05', category: '公報', title: '次世代ロールプレイ体験の提供開始', content: '新しい市民生活シミュレーションシステムの導入により、さらにリアルな社会体験が可能になります。' },
   ]);
 
   const [businessData] = useState([
@@ -90,9 +91,16 @@ const App = () => {
     setChatMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsTyping(true);
 
+    // AI機能の核となるプロンプト
     const systemPrompt = "あなたは『桜川県』のAIコンシェルジュです。桜川県はRobloxの日本を舞台にした本格ロールプレイサーバーです。丁寧かつ親しみやすい日本語で、市民の質問に答えてください。";
 
+    // APIリトライロジック
     const fetchWithRetry = async (retries = 5, delay = 1000) => {
+      // APIキーがない場合の早期リターン（エラー防止）
+      if (!apiKey) {
+        throw new Error('MISSING_API_KEY');
+      }
+
       try {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -103,11 +111,11 @@ const App = () => {
           })
         });
         
-        if (!response.ok) throw new Error('API Error');
+        if (!response.ok) throw new Error('API_ERROR');
         const data = await response.json();
-        return data.candidates?.[0]?.content?.parts?.[0]?.text || "申し訳ございません。現在応答を生成できません。時間をおいて再度お試しください。";
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "申し訳ございません。現在応答を生成できませんでした。";
       } catch (error) {
-        if (retries > 0) {
+        if (error.message !== 'MISSING_API_KEY' && retries > 0) {
           await new Promise(res => setTimeout(res, delay));
           return fetchWithRetry(retries - 1, delay * 2);
         }
@@ -119,7 +127,11 @@ const App = () => {
       const aiResponse = await fetchWithRetry();
       setChatMessages(prev => [...prev, { role: 'ai', text: aiResponse }]);
     } catch (error) {
-      setChatMessages(prev => [...prev, { role: 'ai', text: "接続エラーが発生しました。インターネット接続を確認してください。" }]);
+      let errorMsg = "申し訳ございません。システムが一時的にオフラインです。";
+      if (error.message === 'MISSING_API_KEY') {
+        errorMsg = "現在、AIコンシェルジュはメンテナンス中です（API設定待ち）。しばらくしてから再度お試しください。";
+      }
+      setChatMessages(prev => [...prev, { role: 'ai', text: errorMsg, isError: true }]);
     } finally {
       setIsTyping(false);
     }
@@ -148,7 +160,7 @@ const App = () => {
         <div className="relative text-center z-10 w-full flex flex-col items-center">
           <span className="text-[11px] font-black tracking-[0.5em] text-amber-500 mb-6 uppercase animate-fade-in">至高のロールプレイ体験を、ここで。</span>
           <h1 className="font-black tracking-tighter animate-slide-up leading-[0.8] text-white drop-shadow-[0_0_50px_rgba(255,255,255,0.1)] text-center mb-4" style={{ fontSize: 'clamp(3.5rem, 14vw, 16rem)' }}>SAKURAGAWA</h1>
-          <p className="mt-4 text-[14px] font-black tracking-[1.2em] text-white/80 uppercase pl-[1.2em]">桜川県</p>
+          <p className="mt-4 text-[14px] font-black tracking-[1.2em] text-white/80 uppercase pl-[1.2em]">桜川県 公式ポータルサイト</p>
           <div className="mt-16 flex flex-col md:flex-row gap-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
              <a href="https://discord.gg/zXfJSnQGSB" target="_blank" rel="noopener noreferrer" className="px-12 py-5 bg-white text-black text-[11px] font-black uppercase tracking-widest hover:bg-amber-500 transition-all rounded-full shadow-[0_0_30px_rgba(255,255,255,0.2)] inline-flex items-center gap-2">Discordに参加する <ExternalLink size={14} /></a>
              <button onClick={() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-12 py-5 bg-white/5 border border-white/10 text-white text-[11px] font-black uppercase tracking-widest hover:bg-white/10 transition-all rounded-full backdrop-blur-xl">詳しく知る</button>
@@ -156,7 +168,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* About Section - 日本語キャッチコピー重視 */}
+      {/* アバウトセクション */}
       <section id="about-section" className="py-40 relative z-10">
         <RevealSection className="container mx-auto px-6 max-w-5xl">
           <div className="p-12 md:p-24 bg-white/5 border border-white/10 rounded-[3.5rem] backdrop-blur-[40px] shadow-2xl relative overflow-hidden group">
@@ -177,7 +189,7 @@ const App = () => {
         </RevealSection>
       </section>
 
-      {/* Video Section - 日本語ラベル */}
+      {/* 動画セクション */}
       <section id="trailer-section" className="py-24 relative z-10">
         <RevealSection className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
@@ -187,7 +199,7 @@ const App = () => {
                 <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase leading-none">Trailer.</h2>
               </div>
               <p className="text-zinc-400 text-xs font-bold max-w-xs text-center md:text-right tracking-widest leading-relaxed">
-                桜川県の公開イベント時の映像をご覧ください。
+                桜川県の世界観を凝縮した最新の映像をご覧ください。
               </p>
             </div>
             
@@ -208,14 +220,14 @@ const App = () => {
         </RevealSection>
       </section>
 
-      {/* Stats - 日本語化 */}
+      {/* 統計セクション */}
       <section className="py-32 relative z-10">
         <RevealSection className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { label: "県民数", value: "320", unit: "＋", desc: "公式Discord 参加者数" },
-              { label: "稼働組織数", value: "14", unit: "＋", desc: "県直轄・民間事業" },
-              { label: "解放イベント満足度", value: "100", unit: "%", desc: "徹底したロールプレイ品質" }
+              { label: "県民数", value: "320", unit: "名", desc: "公式Discord 参加者数" },
+              { label: "稼働組織数", value: "14", unit: "団体", desc: "行政機関および民間事業所" },
+              { label: "満足度", value: "100", unit: "%", desc: "徹底したロールプレイ品質" }
             ].map((stat, i) => (
               <div key={i} className="p-10 bg-white/5 border border-white/10 rounded-[2.5rem] backdrop-blur-xl hover:bg-white/10 transition-all duration-500 group">
                 <div className="text-[11px] font-black tracking-widest text-amber-500 uppercase mb-6">{stat.label}</div>
@@ -239,7 +251,7 @@ const App = () => {
       {/* 開発状況バナー */}
       <div className="fixed top-0 w-full bg-amber-500/10 backdrop-blur-md text-amber-500 py-2.5 px-4 flex items-center justify-center gap-4 z-[120] border-b border-white/5">
         <Hammer size={12} className="animate-pulse" />
-        <span className="text-[10px] font-black tracking-[0.5em] uppercase italic">公開中・未公開</span>
+        <span className="text-[10px] font-black tracking-[0.5em] uppercase italic">公式開発ビルド v1.2 公開中</span>
       </div>
 
       {/* ナビゲーション */}
@@ -255,7 +267,7 @@ const App = () => {
         {currentPage === 'news' && (
           <div className="pt-48 pb-24 px-6 animate-fade-in container mx-auto max-w-4xl">
             <button onClick={() => setCurrentPage('home')} className="flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-zinc-500 hover:text-white mb-16 transition-colors"><ArrowLeft size={16} /> トップページへ戻る</button>
-            <h2 className="text-6xl md:text-8xl font-black tracking-tighter italic mb-20">お知らせ<span className="text-amber-500 text-3xl ml-4">News</span></h2>
+            <h2 className="text-6xl md:text-8xl font-black tracking-tighter italic mb-20">お知らせ<span className="text-amber-500 text-3xl ml-4 font-black">News</span></h2>
             <div className="space-y-6">
               {newsData.map(news => (
                 <div key={news.id} className="p-10 bg-white/5 border border-white/10 rounded-[2.5rem] backdrop-blur-xl hover:bg-white/10 transition-all group">
@@ -275,7 +287,7 @@ const App = () => {
           <div className="pt-48 pb-24 animate-fade-in px-6">
             <div className="container mx-auto max-w-6xl">
               <button onClick={() => setCurrentPage('home')} className="flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-zinc-500 hover:text-white mb-16 transition-colors"><ArrowLeft size={16} /> トップページへ戻る</button>
-              <h2 className="text-6xl md:text-8xl font-black tracking-tighter italic mb-20">組織・事業所<span className="text-amber-500 text-3xl ml-4">Organizations</span></h2>
+              <h2 className="text-6xl md:text-8xl font-black tracking-tighter italic mb-20">組織・事業所<span className="text-amber-500 text-3xl ml-4 font-black">Organizations</span></h2>
               
               <section className="mb-32">
                 <div className="flex items-center gap-4 border-b border-white/5 pb-6 mb-10"><Shield size={20} className="text-amber-500" /><h3 className="text-xl font-black tracking-widest uppercase">行政・公共サービス</h3></div>
@@ -316,7 +328,7 @@ const App = () => {
           <div className="pt-48 pb-24 animate-fade-in px-6">
             <div className="container mx-auto max-w-4xl">
               <button onClick={() => setCurrentPage('home')} className="flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-zinc-500 hover:text-white mb-16 transition-colors"><ArrowLeft size={16} /> トップページへ戻る</button>
-              <h2 className="text-6xl md:text-8xl font-black tracking-tighter italic mb-20">採用・設立申請<span className="text-amber-500 text-3xl ml-4">Recruitment</span></h2>
+              <h2 className="text-6xl md:text-8xl font-black tracking-tighter italic mb-20">採用・設立申請<span className="text-amber-500 text-3xl ml-4 font-black">Recruitment</span></h2>
               <div className="grid gap-8">
                 {[
                   { icon: <Shield size={32} />, title: "行政機関への採用", type: "公務員" },
@@ -350,7 +362,7 @@ const App = () => {
 
       {/* AI コンシェルジュ */}
       {!isChatOpen && (
-        <button onClick={() => setIsChatOpen(true)} className="fixed bottom-10 right-10 z-[140] w-16 h-16 bg-white/10 border border-white/20 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 hover:bg-white hover:text-black transition-all backdrop-blur-2xl group">
+        <button onClick={() => setIsChatOpen(true)} className="fixed bottom-10 right-10 z-[140] w-16 h-16 bg-white/10 border border-white/20 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 hover:bg-white hover:text-black transition-all backdrop-blur-2xl group shadow-amber-500/10">
           <MessageSquare size={28} />
           <span className="absolute -top-2 -left-2 bg-amber-500 text-black text-[8px] font-black px-2 py-1 rounded-full animate-bounce">AI相談</span>
         </button>
@@ -367,17 +379,23 @@ const App = () => {
           <div className="flex-1 overflow-y-auto p-8 space-y-6">
             {chatMessages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] p-5 text-[12px] leading-relaxed rounded-[1.8rem] ${msg.role === 'user' ? 'bg-amber-500 text-black rounded-tr-none font-bold' : 'bg-white/5 text-zinc-200 border border-white/10 rounded-tl-none'}`}>
+                <div className={`max-w-[85%] p-5 text-[12px] leading-relaxed rounded-[1.8rem] ${
+                  msg.role === 'user' 
+                    ? 'bg-amber-500 text-black rounded-tr-none font-bold' 
+                    : msg.isError 
+                      ? 'bg-red-500/10 text-red-400 border border-red-500/20 rounded-tl-none italic'
+                      : 'bg-white/5 text-zinc-200 border border-white/10 rounded-tl-none'
+                }`}>
+                  {msg.isError && <AlertTriangle size={14} className="mb-2" />}
                   {msg.text}
                 </div>
               </div>
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white/5 p-5 rounded-[1.8rem] rounded-tl-none border border-white/10 flex gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce"></div>
-                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                <div className="bg-white/5 p-5 rounded-[1.8rem] rounded-tl-none border border-white/10 flex gap-1.5 items-center">
+                  <Loader2 size={14} className="animate-spin text-amber-500 mr-2" />
+                  <div className="text-[10px] font-black text-amber-500/60 tracking-widest uppercase animate-pulse">Thinking</div>
                 </div>
               </div>
             )}
@@ -389,9 +407,16 @@ const App = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="市政や手続きについて質問する..."
-              className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-[12px] focus:ring-2 focus:ring-amber-500/30 outline-none text-white placeholder:text-zinc-600 transition-all"
+              disabled={isTyping}
+              className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-[12px] focus:ring-2 focus:ring-amber-500/30 outline-none text-white placeholder:text-zinc-600 transition-all disabled:opacity-50"
             />
-            <button type="submit" disabled={isTyping} className="p-4 bg-white text-black rounded-full hover:bg-amber-500 transition-all active:scale-90 shadow-xl"><Send size={20} /></button>
+            <button 
+              type="submit" 
+              disabled={isTyping || !inputText.trim()} 
+              className="p-4 bg-white text-black rounded-full hover:bg-amber-500 transition-all active:scale-90 shadow-xl disabled:opacity-50 disabled:bg-zinc-800 disabled:text-zinc-500"
+            >
+              <Send size={20} />
+            </button>
           </form>
         </div>
       )}
@@ -407,7 +432,7 @@ const App = () => {
             <a href="#" className="hover:text-white transition-colors">利用規約</a>
             <a href="#" className="hover:text-white transition-colors">お問い合わせ</a>
           </div>
-          <div>© 2026 桜川県制作委員会(同).</div>
+          <div>© 2026 SAKURAGAWA PREFECTURE. ALL RIGHTS RESERVED.</div>
         </div>
       </footer>
 
@@ -417,7 +442,7 @@ const App = () => {
         @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
         .animate-fade-in { animation: fadeIn 1.5s ease-out forwards; }
         .animate-slide-up { animation: slideUp 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
-        .animate-slow-zoom { animation: slowZoom 25s ease-in-out infinite alternate; }
+        .animate-slow-zoom { animation: slowZoom 30s ease-in-out infinite alternate; }
         body::-webkit-scrollbar { width: 6px; }
         body::-webkit-scrollbar-track { background: #0a0a0c; }
         body::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
