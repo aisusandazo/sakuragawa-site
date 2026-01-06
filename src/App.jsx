@@ -40,7 +40,7 @@ const App = () => {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center px-4 overflow-hidden">
         <div className="absolute inset-0 bg-black">
-          {/* 背景画像：ここに自分の画像URL（https://...）を貼り付けてください */}
+          {/* 背景画像：ここに貼り付け */}
           <div className="absolute inset-0 bg-[url('https://cdn.discordapp.com/attachments/1420627208384544805/1457981527555313746/8439333602_87905417474793_1767424421452.png?ex=695dfa9c&is=695ca91c&hm=b6f1029d269ad5d08a0473b00d6a877231139fb422e4ff642d9b9c1bda90d63d&')] bg-cover bg-center opacity-40 grayscale"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-white"></div>
         </div>
