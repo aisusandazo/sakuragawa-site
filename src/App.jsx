@@ -189,7 +189,7 @@ const App = () => {
             <div className="relative group">
               <div className="absolute -inset-4 bg-zinc-200/30 rounded-lg blur-xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
               <div className="relative aspect-video w-full rounded-sm overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white bg-black">
-                <iframe className="absolute inset-0 w-full h-full" src="https://youtu.be/9TywKfddUZQ?si=d73yz7UmBgGKvZFZ" title="Sakuragawa Official Trailer" frameBorder="0" allowFullScreen></iframe>
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/9TywKfddUZQ?si=d73yz7UmBgGKvZFZ&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
             </div>
           </div>
