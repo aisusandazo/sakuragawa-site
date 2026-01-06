@@ -136,9 +136,9 @@ const App = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/60"></div>
         </div>
         <div className="relative text-center z-10 w-full flex flex-col items-center">
-          <span className="text-[10px] font-black tracking-[0.6em] text-amber-500/80 mb-6 uppercase animate-fade-in">A New Reality on Roblox</span>
+          <span className="text-[10px] font-black tracking-[0.6em] text-amber-500/80 mb-6 uppercase animate-fade-in">新ハードロールプレイ</span>
           <h1 className="font-black tracking-tighter animate-slide-up leading-[0.8] text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] text-center" style={{ fontSize: 'clamp(3rem, 12vw, 14rem)' }}>SAKURAGAWA</h1>
-          <p className="mt-8 text-[12px] font-black tracking-[1.2em] text-white/90 uppercase pl-[1.2em]">桜川県｜Sakuragawa Prefecture</p>
+          <p className="mt-8 text-[12px] font-black tracking-[1.2em] text-white/90 uppercase pl-[1.2em]">桜川県</p>
           <div className="mt-12 flex flex-col md:flex-row gap-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
              <a href="https://discord.gg/zXfJSnQGSB" target="_blank" rel="noopener noreferrer" className="px-10 py-5 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-amber-500 transition-all rounded-sm shadow-2xl inline-flex items-center gap-2">Join Discord <ExternalLink size={12} /></a>
              <button onClick={() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-transparent border border-white/20 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all rounded-sm backdrop-blur-sm">Learn More</button>
@@ -161,10 +161,10 @@ const App = () => {
                 <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter mb-8 uppercase text-black leading-none">About<br/>SAKURAGAWA.</h2>
               </div>
               <div className="text-left border-l border-zinc-100 pl-10">
-                <h3 className="text-2xl font-black mb-6 text-black italic">日本を舞台にした最高峰のRP。</h3>
+                <h3 className="text-2xl font-black mb-6 text-black italic">日本を舞台にしたハードRP。</h3>
                 <p className="text-zinc-500 text-sm md:text-base leading-loose font-medium mb-6">
                   桜川県は、Roblox上で運営されている日本をモチーフにした本格派ロールプレイサーバーです。
-                  緻密に設計された法執行機関、公共インフラ、そして活発な民間経済が相互に作用する「もう一つの現実」を提供しています。
+                  緻密に設計された法執行機関、公共インフラ、そして活発な民間事業が相互に作用する「もう一つの現実」を提供しています。
                 </p>
               </div>
             </div>
@@ -178,7 +178,7 @@ const App = () => {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
               <div className="text-center md:text-left">
-                <span className="text-[10px] font-black tracking-[0.4em] text-amber-500 uppercase mb-4 block">Official Showcase</span>
+                <span className="text-[10px] font-black tracking-[0.4em] text-amber-500 uppercase mb-4 block">公式PR動画</span>
                 <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter text-black uppercase leading-none">Official Trailer.</h2>
               </div>
               <div className="w-full md:w-1/3 h-[1px] bg-zinc-200 hidden md:block"></div>
@@ -189,7 +189,7 @@ const App = () => {
             <div className="relative group">
               <div className="absolute -inset-4 bg-zinc-200/30 rounded-lg blur-xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
               <div className="relative aspect-video w-full rounded-sm overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-white bg-black">
-                <iframe className="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Sakuragawa Official Trailer" frameBorder="0" allowFullScreen></iframe>
+                <iframe className="absolute inset-0 w-full h-full" src="https://youtu.be/9TywKfddUZQ?si=d73yz7UmBgGKvZFZ" title="Sakuragawa Official Trailer" frameBorder="0" allowFullScreen></iframe>
               </div>
             </div>
           </div>
@@ -412,8 +412,8 @@ const App = () => {
       {/* フッター */}
       <footer className="bg-black text-white pt-24 pb-12 text-center border-t border-zinc-900">
         <div className="text-4xl font-black italic tracking-tighter mb-4">桜川県｜Sakuragawa Prefecture</div>
-        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest px-4 mb-8 font-bold">Professional Roleplay Project in Roblox.</p>
-        <div className="border-t border-zinc-900 pt-8 text-zinc-600 text-[9px] font-bold">© 2026 制作: 桜川県制作委員会(同)</div>
+        <p className="text-zinc-500 text-[11px] font-black uppercase tracking-widest px-4 mb-8 font-bold">Professional Roleplay Project in Roblox.</p>
+        <div className="border-t border-zinc-900 pt-8 text-zinc-600 text-[11px] font-bold">© 2026 制作: 桜川県制作委員会(同)</div>
       </footer>
 
       <style dangerouslySetInnerHTML={{ __html: `
